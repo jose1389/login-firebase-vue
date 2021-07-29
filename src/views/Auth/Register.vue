@@ -53,6 +53,10 @@
 </template>
 
 <script>
+
+//import db from '@/firebase/init'
+import firebase from 'firebase'
+
 export default {
   data() {
     return {
@@ -65,8 +69,17 @@ export default {
   name: "Register",
   methods: {
     register() {
+      this.error = ''
       if (this.name && this.email && this.password) {
-        //formulario
+        firebase.auth().createUserWithEmailAndPassword(this.email, this.password)
+        .then(user => {
+          this.name = ''
+          this.email = ''
+          this.password = ''
+          console.log(user)
+        }).catch(err => {
+          this.error = err.message
+        })
       } else {
         this.error = 'Todos los campos son requeridos'
       }
